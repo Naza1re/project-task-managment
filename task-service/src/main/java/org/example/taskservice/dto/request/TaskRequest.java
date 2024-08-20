@@ -1,4 +1,4 @@
-package org.example.projectservice.dto;
+package org.example.taskservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectResponse {
-    private String id;
+public class TaskRequest {
+    private String projectId;
     private String name;
+    private List<String> referenceTaskIds;
     private String description;
-    private String companyId;
     private String status;
 }
