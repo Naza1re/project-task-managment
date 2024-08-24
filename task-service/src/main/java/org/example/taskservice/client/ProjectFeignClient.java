@@ -1,11 +1,11 @@
 package org.example.taskservice.client;
 
 import org.example.taskservice.dto.response.ProjectResponse;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient
+@FeignClient(value = "project-client")
 public interface ProjectFeignClient {
 
     @GetMapping("/{id}")
