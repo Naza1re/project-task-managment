@@ -3,7 +3,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8090/eureka
 server:
-  port: 8081
+  port: 8084
 spring:
   application:
     name: companies-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/company
