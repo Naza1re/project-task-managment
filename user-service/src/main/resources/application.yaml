@@ -4,9 +4,41 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/user
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: task-client
+            client-secret: GRnfhjeldW0UhTo0R22M8qi3gGxzYOXt
+            scope: openid, profile
+            authorization-grant-type: authorization_code
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/auth/realms/task-realm
+            user-name-attribute: preferred_username
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8180/auth/realms/task-realm
+          jwk-set-uri: http://localhost:8180/auth/realms/task-realm/protocol/openid-connect/certs
+
+keycloak:
+  server-url: http://localhost:8180/auth
+  realm: user-realm
+  username: admin
+  password: adminpass
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8090/eureka
+jwt:
+  auth:
+    converter:
+      principal-attribute: sub
+      resource-id: task-client
+logging:
+  level:
+    root: DEBUG
+
 server:
   port: 8081

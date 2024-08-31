@@ -26,9 +26,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponse createTask(TaskRequest request) {
-        checkingProjectExistAndNotClosed(request.getProjectId());
+        System.out.println(request);
+        //checkingProjectExistAndNotClosed(request.getProjectId());
         Task taskToSave = taskMapper.fromRequestToEntity(request);
+        System.out.println(taskToSave);
         Task savedTask = taskRepository.save(taskToSave);
+        System.out.println(savedTask);
         return taskMapper.fromEntityToResponse(savedTask);
     }
 

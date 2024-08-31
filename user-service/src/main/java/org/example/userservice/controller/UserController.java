@@ -1,6 +1,5 @@
 package org.example.userservice.controller;
 
-import jakarta.ws.rs.GET;
 import lombok.RequiredArgsConstructor;
 import org.example.userservice.dto.UserRequest;
 import org.example.userservice.dto.UserResponse;
@@ -8,6 +7,7 @@ import org.example.userservice.dto.UserResponseList;
 import org.example.userservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +29,7 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.findUserById(id));
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<UserResponseList> findAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable String id, @RequestBody UserRequest request
     ) {
-        return ResponseEntity.ok(userService.updateUserById(id,request));
+        return ResponseEntity.ok(userService.updateUserById(id, request));
     }
 
     @DeleteMapping("/{id}")

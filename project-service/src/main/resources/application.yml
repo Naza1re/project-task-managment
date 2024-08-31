@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: project-service
   data:
     mongodb:
       uri: mongodb://localhost:27017/project

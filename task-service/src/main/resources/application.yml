@@ -1,8 +1,12 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/task
   application:
     name: task-service
 server:
   port: 8082
+
 
 eureka:
   client:

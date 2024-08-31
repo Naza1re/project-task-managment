@@ -11,15 +11,21 @@ import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
 import org.example.userservice.service.UserService;
 import org.example.userservice.utill.ExceptionMessages;
+import org.keycloak.admin.client.Keycloak;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+
+import static org.example.userservice.config.security.SecurityConstants.*;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final Keycloak keycloak;
 
     @Override
     public UserResponse createUser(UserRequest request) {
@@ -60,6 +66,15 @@ public class UserServiceImpl implements UserService {
         User user = getOrThrow(id);
         userRepository.delete(user);
         return mapper.fromEntityToResponse(user);
+    }
+
+    @Override
+    public org.example.userservice.config.security.User extractUserInfo(Jwt jwt) {
+        return org.example.userservice.config.security.User.builder()
+                .phone(jwt.getClaim(PHONE))
+                .id(UUID.fromString(jwt.getClaim(ID)))
+                .username(jwt.getClaim(USERNAME))
+                .build();
     }
 
     private void checkUserAlreadyExist(UserRequest request) {

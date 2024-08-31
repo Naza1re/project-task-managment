@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloakdb
+      POSTGRES_USER: keycloakuser
+      POSTGRES_PASSWORD: keycloakpass
+    networks:
+      - keycloak-network
+  keycloak:
+    image: quay.io/keycloak/keycloak:16.1.1
+    ports:
+      - 8180:8080
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloakdb
+      DB_SCHEMA: public
+      DB_USER: keycloakuser
+      DB_PASSWORD: keycloakpass
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: adminpass
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+    volumes:
+          - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    networks:
+      - keycloak-network
+    depends_on:
+      - postgres
+
+
+networks:
+  keycloak-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
