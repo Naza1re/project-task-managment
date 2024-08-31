@@ -9,7 +9,7 @@ public class SecurityConstants {
     public static final String ID = "sub";
     public static final String USERNAME = "preferred_username";
     public static final String ROLES = "roles";
-    public static final String RESOURCES_ACCESS = "realm_access";
+    public static final String RESOURCES_ACCESS = "resource_access";
 
 
 }
