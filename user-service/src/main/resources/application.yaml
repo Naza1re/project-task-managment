@@ -36,9 +36,6 @@ jwt:
     converter:
       principal-attribute: sub
       resource-id: task-client
-logging:
-  level:
-    root: DEBUG
 
 server:
   port: 8081

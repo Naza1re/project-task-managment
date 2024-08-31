@@ -1,4 +1,4 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,4 +1,4 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security.config;
 
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;

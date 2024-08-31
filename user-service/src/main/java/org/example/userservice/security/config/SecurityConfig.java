@@ -1,7 +1,7 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security.config;
 
-import jakarta.ws.rs.HttpMethod;
 import lombok.RequiredArgsConstructor;
+import org.example.userservice.security.JwtAuthConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

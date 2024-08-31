@@ -1,6 +1,8 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security;
 
 import lombok.RequiredArgsConstructor;
+import org.example.userservice.security.model.User;
+import org.example.userservice.security.utill.SecurityConstants;
 import org.example.userservice.service.UserService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -18,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.example.userservice.config.security.SecurityConstants.RESOURCES_ACCESS;
+import static org.example.userservice.security.utill.SecurityConstants.RESOURCES_ACCESS;
 
 @RequiredArgsConstructor
 @Component

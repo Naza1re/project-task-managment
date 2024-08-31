@@ -1,6 +1,6 @@
 package org.example.userservice.service;
 
-import org.example.userservice.config.security.User;
+import org.example.userservice.security.model.User;
 import org.example.userservice.dto.UserRequest;
 import org.example.userservice.dto.UserResponse;
 import org.example.userservice.dto.UserResponseList;

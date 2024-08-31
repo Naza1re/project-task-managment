@@ -1,4 +1,4 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.apache.commons.lang.SystemUtils.USER_NAME;
-import static org.example.userservice.config.security.SecurityConstants.PHONE;
+import static org.example.userservice.security.utill.SecurityConstants.PHONE;
 
 
 @Getter

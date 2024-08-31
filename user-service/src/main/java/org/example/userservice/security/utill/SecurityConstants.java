@@ -1,4 +1,4 @@
-package org.example.userservice.config.security;
+package org.example.userservice.security.utill;
 
 import lombok.experimental.UtilityClass;
 

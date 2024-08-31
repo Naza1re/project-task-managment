@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static org.example.userservice.config.security.SecurityConstants.*;
+import static org.example.userservice.security.utill.SecurityConstants.*;
 
 @RequiredArgsConstructor
 @Service
@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public org.example.userservice.config.security.User extractUserInfo(Jwt jwt) {
-        return org.example.userservice.config.security.User.builder()
+    public org.example.userservice.security.model.User extractUserInfo(Jwt jwt) {
+        return org.example.userservice.security.model.User.builder()
                 .phone(jwt.getClaim(PHONE))
                 .id(UUID.fromString(jwt.getClaim(ID)))
                 .username(jwt.getClaim(USERNAME))
