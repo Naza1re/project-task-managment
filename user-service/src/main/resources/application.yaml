@@ -24,7 +24,7 @@ spring:
 
 keycloak:
   server-url: http://localhost:8180/auth
-  realm: user-realm
+  realm: task-realm
   username: admin
   password: adminpass
 eureka:

@@ -5,10 +5,13 @@ import org.example.userservice.dto.UserRequest;
 import org.example.userservice.dto.UserResponse;
 import org.example.userservice.dto.UserResponseList;
 import org.example.userservice.service.UserService;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,5 +51,10 @@ public class UserController {
     ) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(userService.deleteUserById(id));
+    }
+
+    @GetMapping("/users")
+    public List<UserRepresentation> getUsers() {
+        return userService.findAllUsersOfKyecloack();
     }
 }

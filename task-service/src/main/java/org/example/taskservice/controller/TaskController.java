@@ -15,10 +15,24 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping
-    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request) {
+    @PostMapping("/{projectId}")
+    public ResponseEntity<TaskResponse> createTaskForProject(
+            @PathVariable String projectId,
+            @RequestBody TaskRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(taskService.createTask(request));
+                .body(taskService.createTask(request,projectId));
+    }
+
+    @PutMapping("/close/{taskId}")
+    public ResponseEntity<TaskResponse> closeTaskBYTaskId(
+            @PathVariable String taskId) {
+        return ResponseEntity.ok(taskService.closeTask(taskId));
+    }
+
+    @PutMapping("/open/{taskId}")
+    public ResponseEntity<TaskResponse> openTask(
+            @PathVariable String taskId) {
+        return ResponseEntity.ok(taskService.openTaskByTaskId(taskId));
     }
 
     @GetMapping("/{id}")
@@ -39,5 +53,6 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(taskService.deleteTaskById(id));
     }
+
 
 }

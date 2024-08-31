@@ -12,6 +12,8 @@ import org.example.userservice.repository.UserRepository;
 import org.example.userservice.service.UserService;
 import org.example.userservice.utill.ExceptionMessages;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
     private final Keycloak keycloak;
+    @Value("${keycloak.realm}")
+    private String realm;
+
 
     @Override
     public UserResponse createUser(UserRequest request) {
@@ -75,6 +80,11 @@ public class UserServiceImpl implements UserService {
                 .id(UUID.fromString(jwt.getClaim(ID)))
                 .username(jwt.getClaim(USERNAME))
                 .build();
+    }
+
+    @Override
+    public List<UserRepresentation> findAllUsersOfKyecloack() {
+        return keycloak.realm(realm).users().list();
     }
 
     private void checkUserAlreadyExist(UserRequest request) {
