@@ -19,7 +19,7 @@ public class User {
     @Id
     private String id;
     private String username;
+    private String email;
     private List<String> projects;
     private String companyId;
-    private String phone;
 }

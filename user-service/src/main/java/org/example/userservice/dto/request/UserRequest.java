@@ -12,9 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class UserRequest {
-    private String id;
-    private String username;
     private List<String> projects;
     private String companyId;
-    private String phone;
 }

@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
+
     private final UserService userService;
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<UserResponse> createUser(
-            @AuthenticationPrincipal OAuth2User user) {
+            @AuthenticationPrincipal OAuth2User user,
+            @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(user));
+                .body(userService.createUser(user,request));
     }
 
     @GetMapping("/{id}")
@@ -39,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable String id, @RequestBody UserRequest request
@@ -47,6 +49,7 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUserById(id, request));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> deleteUser(
             @PathVariable String id
@@ -54,4 +57,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(userService.deleteUserById(id));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PutMapping("/{userId}/add/project/{projectId}")
+    public ResponseEntity<UserResponse> addProjectToUser(
+            @PathVariable String projectId,
+            @PathVariable String userId) {
+        return ResponseEntity.ok(userService.addProjectToUser(userId,projectId));
+    }
+
 }

@@ -12,8 +12,10 @@ import org.example.taskservice.mapper.TaskMapper;
 import org.example.taskservice.model.Task;
 import org.example.taskservice.model.status.Status;
 import org.example.taskservice.repository.TaskRepository;
+import org.example.taskservice.security.model.User;
 import org.example.taskservice.service.TaskService;
 import org.example.taskservice.utill.ExceptionMessages;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -96,6 +98,11 @@ public class TaskServiceImpl implements TaskService {
 
         Task taskToSave = taskRepository.save(task);
         return taskMapper.fromEntityToResponse(taskToSave);
+    }
+
+    @Override
+    public User extractUserInfo(Jwt jwt) {
+        return null;
     }
 
 

@@ -1,5 +1,6 @@
 package org.example.userservice.exception.handler;
 
+import org.example.userservice.exception.NotFoundException;
 import org.example.userservice.exception.UserAlreadyExistByPhoneException;
 import org.example.userservice.exception.UserNotFoundException;
 import org.example.userservice.exception.handler.error.AppError;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ServiceExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({UserNotFoundException.class, NotFoundException.class})
     public ResponseEntity<AppError> handleNotFoundException(
             RuntimeException exception
     ) {

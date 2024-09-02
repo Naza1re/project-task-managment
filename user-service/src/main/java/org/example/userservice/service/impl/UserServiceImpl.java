@@ -1,18 +1,19 @@
 package org.example.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.userservice.client.ProjectFeignClient;
 import org.example.userservice.dto.request.UserRequest;
+import org.example.userservice.dto.response.ProjectResponse;
 import org.example.userservice.dto.response.UserResponse;
 import org.example.userservice.dto.response.UserResponseList;
-import org.example.userservice.exception.UserAlreadyExistByPhoneException;
 import org.example.userservice.exception.UserNotFoundException;
 import org.example.userservice.mapper.UserMapper;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
+import org.example.userservice.service.KeycloakUserManagementService;
 import org.example.userservice.service.UserService;
 import org.example.userservice.utill.ExceptionMessages;
 import org.example.userservice.utill.KeycloakConstants;
-import org.keycloak.admin.client.Keycloak;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.example.userservice.security.utill.SecurityConstants.*;
-import static org.example.userservice.utill.KeycloakConstants.*;
 
 @RequiredArgsConstructor
 @Service
@@ -30,14 +30,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
-    private final Keycloak keycloak;
+    private final KeycloakUserManagementService keycloakUserManagementService;
+    private final ProjectFeignClient projectFeignClient;
 
     @Override
-    public UserResponse createUser(OAuth2User oAuth2User) {
-        UserRequest request = extractUserRequestFromOauth2User(oAuth2User);
-        checkUserAlreadyExist(request);
+    public UserResponse createUser(OAuth2User oAuth2User, UserRequest request) {
+
 
         User user = mapper.fromRequestToEntity(request);
+        setAdditionFieldsForOauth2User(user, oAuth2User);
         User savedUser = userRepository.save(user);
 
         return mapper.fromEntityToResponse(savedUser);
@@ -65,12 +66,14 @@ public class UserServiceImpl implements UserService {
         User user = getOrThrow(id);
         User updatedUser = mapper.fromRequestToEntity(request);
         updatedUser.setId(user.getId());
+        keycloakUserManagementService.updateUser(id, request);
         return mapper.fromEntityToResponse(userRepository.save(updatedUser));
     }
 
     @Override
     public UserResponse deleteUserById(String id) {
         User user = getOrThrow(id);
+        keycloakUserManagementService.deleteUserById(id);
         userRepository.delete(user);
         return mapper.fromEntityToResponse(user);
     }
@@ -78,17 +81,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public org.example.userservice.security.model.User extractUserInfo(Jwt jwt) {
         return org.example.userservice.security.model.User.builder()
-                .phone(jwt.getClaim(PHONE))
+                .surname(jwt.getClaim(FAMILY_NAME))
+                .name(jwt.getClaim(GIVEN_NAME))
                 .id(UUID.fromString(jwt.getClaim(ID)))
-                .companyId(jwt.getClaim(COMPANY_ID))
+                .email(jwt.getClaim(EMAIL))
                 .username(jwt.getClaim(USERNAME))
                 .build();
     }
 
-    private void checkUserAlreadyExist(UserRequest request) {
-        if (userRepository.existsByPhone(request.getPhone())) {
-            throw new UserAlreadyExistByPhoneException(String.format(ExceptionMessages.USER_ALREADY_EXIST_BY_PHONE, request.getPhone()));
-        }
+    @Override
+    public UserResponse addProjectToUser(String userId, String projectId) {
+        ProjectResponse response = projectFeignClient.getProjectById(projectId);
+        User user = getOrThrow(userId);
+
+        List<String> projects = user.getProjects();
+        projects.add(response.getId());
+        user.setProjects(projects);
+
+        User userToSave = userRepository.save(user);
+
+        return mapper.fromEntityToResponse(userToSave);
+
     }
 
     private User getOrThrow(String id) {
@@ -96,16 +109,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(String.format(ExceptionMessages.USER_NOT_FOUND, id)));
     }
 
-    private UserRequest extractUserRequestFromOauth2User(OAuth2User user) {
-        System.out.println((String) user.getAttribute(COMPANY_ID));
-        System.out.println((String) user.getAttribute(USERNAME_ATTRIBUTE));
-        System.out.println((String) user.getAttribute(PHONE_ATTRIBUTE));
+    private void setAdditionFieldsForOauth2User(User user, OAuth2User oAuth2User) {
+        user.setEmail(oAuth2User.getAttribute(EMAIL));
+        user.setId(Objects.requireNonNull(oAuth2User.getAttribute(KeycloakConstants.USER_ID)).toString());
+        user.setUsername(oAuth2User.getAttribute(EMAIL));
 
-        return UserRequest.builder()
-                .username(user.getAttribute(KeycloakConstants.USERNAME_ATTRIBUTE))
-                .phone(user.getAttribute(KeycloakConstants.PHONE_ATTRIBUTE))
-                .companyId(user.getAttribute(COMPANY_ID))
-                .id(Objects.requireNonNull(user.getAttribute(USER_ID)).toString())
-                .build();
     }
 }

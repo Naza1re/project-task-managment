@@ -36,6 +36,10 @@ jwt:
     converter:
       principal-attribute: sub
       resource-id: task-client
+service:
+  project:
+    name: project-service
+    path: /api/v1/project
 
 server:
   port: 8081

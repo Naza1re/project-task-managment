@@ -1,12 +1,7 @@
-package org.example.userservice.security.model;
+package org.example.taskservice.security.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.example.userservice.security.utill.SecurityConstants;
-import org.example.userservice.utill.KeycloakConstants;
+import lombok.*;
+import org.example.taskservice.security.utill.SecurityConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,8 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.apache.commons.lang.SystemUtils.USER_NAME;
-import static org.example.userservice.security.utill.SecurityConstants.*;
+import static org.example.taskservice.security.utill.SecurityConstants.*;
 
 
 @Getter
