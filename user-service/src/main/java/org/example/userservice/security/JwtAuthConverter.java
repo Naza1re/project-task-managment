@@ -57,9 +57,6 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
         if (resourceAccess == null
                 || (resource = (Map<String, Object>) resourceAccess.get(properties.getResourceId())) == null
                 || (resourceRoles = (Collection<String>) resource.get(SecurityConstants.ROLES)) == null) {
-            System.out.println( "Resource access "+resourceAccess);
-            System.out.println("Property .getResources id :"+resourceAccess.get(properties.getResourceId()));
-            System.out.println("In if block");
             return Set.of();
         }
         System.out.println("Resource role "+resourceRoles);

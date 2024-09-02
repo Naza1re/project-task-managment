@@ -23,6 +23,13 @@ public class TaskController {
                 .body(taskService.createTask(request,projectId));
     }
 
+    @PutMapping("/assign/{taskId}/to/{userId}")
+    public ResponseEntity<TaskResponse> assignTaskToProject
+            (@PathVariable String taskId,
+             @PathVariable String userId) {
+        return ResponseEntity.ok(taskService.assignTaskToUserWithId(taskId,userId));
+    }
+
     @PutMapping("/close/{taskId}")
     public ResponseEntity<TaskResponse> closeTaskBYTaskId(
             @PathVariable String taskId) {

@@ -1,17 +1,16 @@
 package org.example.userservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.userservice.dto.UserRequest;
-import org.example.userservice.dto.UserResponse;
-import org.example.userservice.dto.UserResponseList;
+import org.example.userservice.dto.request.UserRequest;
+import org.example.userservice.dto.response.UserResponse;
+import org.example.userservice.dto.response.UserResponseList;
 import org.example.userservice.service.UserService;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,11 +18,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(
-            @RequestBody UserRequest request) {
+            @AuthenticationPrincipal OAuth2User user) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(request));
+                .body(userService.createUser(user));
     }
 
     @GetMapping("/{id}")
@@ -32,12 +32,14 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.findUserById(id));
     }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<UserResponseList> findAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable String id, @RequestBody UserRequest request
@@ -51,10 +53,5 @@ public class UserController {
     ) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(userService.deleteUserById(id));
-    }
-
-    @GetMapping("/users")
-    public List<UserRepresentation> getUsers() {
-        return userService.findAllUsersOfKyecloack();
     }
 }

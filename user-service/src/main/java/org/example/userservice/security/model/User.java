@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.example.userservice.security.utill.SecurityConstants;
+import org.example.userservice.utill.KeycloakConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.apache.commons.lang.SystemUtils.USER_NAME;
-import static org.example.userservice.security.utill.SecurityConstants.PHONE;
+import static org.example.userservice.security.utill.SecurityConstants.*;
 
 
 @Getter
@@ -27,6 +29,7 @@ public class User implements UserDetails, OAuth2User {
     private UUID id;
     private String username;
     private String phone;
+    private String companyId;
 
 
     private Collection<? extends GrantedAuthority> authorities;
@@ -40,8 +43,9 @@ public class User implements UserDetails, OAuth2User {
     public Map<String, Object> getAttributes() {
 
         return Map.of("id", id,
-                USER_NAME, username,
-                PHONE, phone);
+                SecurityConstants.USER_NAME, username,
+                PHONE, phone,
+                KeycloakConstants.COMPANY_ID,companyId);
     }
 
     @Override

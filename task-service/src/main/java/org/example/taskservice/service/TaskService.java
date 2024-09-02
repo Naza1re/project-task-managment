@@ -16,4 +16,6 @@ public interface TaskService {
     TaskResponse closeTask(String taskId);
 
     TaskResponse openTaskByTaskId(String taskId);
+
+    TaskResponse assignTaskToUserWithId(String taskId, String userId);
 }

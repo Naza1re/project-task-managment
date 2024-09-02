@@ -1,8 +1,8 @@
 package org.example.userservice.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.example.userservice.dto.UserRequest;
-import org.example.userservice.dto.UserResponse;
+import org.example.userservice.dto.request.UserRequest;
+import org.example.userservice.dto.response.UserResponse;
 import org.example.userservice.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

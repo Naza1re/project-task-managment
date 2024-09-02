@@ -1,4 +1,4 @@
-package org.example.userservice.dto;
+package org.example.userservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponse {
+public class UserRequest {
     private String id;
     private String username;
     private List<String> projects;

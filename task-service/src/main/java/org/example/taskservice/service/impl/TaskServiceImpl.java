@@ -2,9 +2,11 @@ package org.example.taskservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.taskservice.client.ProjectFeignClient;
+import org.example.taskservice.client.UserFeignClient;
 import org.example.taskservice.dto.request.TaskRequest;
 import org.example.taskservice.dto.response.ProjectResponse;
 import org.example.taskservice.dto.response.TaskResponse;
+import org.example.taskservice.dto.response.UserResponse;
 import org.example.taskservice.exception.TaskNotFoundException;
 import org.example.taskservice.mapper.TaskMapper;
 import org.example.taskservice.model.Task;
@@ -24,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectFeignClient projectFeignClient;
     private final TaskMapper taskMapper;
+    private final UserFeignClient userFeignClient;
 
     @Override
     public TaskResponse createTask(TaskRequest request, String projectId) {
@@ -65,17 +68,32 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponse closeTask(String taskId) {
 
         Task task = getOrThrow(taskId);
+
         task.setCloseAt(LocalDateTime.now());
         task.setStatus(Status.CLOSED);
-        Task taskToSave = taskRepository.save(task);
 
+        Task taskToSave = taskRepository.save(task);
         return taskMapper.fromEntityToResponse(taskToSave);
     }
 
     @Override
     public TaskResponse openTaskByTaskId(String taskId) {
         Task task = getOrThrow(taskId);
+
         task.setStatus(Status.OPEN);
+
+        Task taskToSave = taskRepository.save(task);
+        return taskMapper.fromEntityToResponse(taskToSave);
+    }
+
+    @Override
+    public TaskResponse assignTaskToUserWithId(String taskId, String userId) {
+        UserResponse userResponse = userFeignClient.getUser(userId);
+        Task task = getOrThrow(taskId);
+
+        task.setUserId(userResponse.getId());
+        task.setStatus(Status.ASSIGNED);
+
         Task taskToSave = taskRepository.save(task);
         return taskMapper.fromEntityToResponse(taskToSave);
     }
