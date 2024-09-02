@@ -1,9 +1,9 @@
-package org.example.taskservice.security;
+package org.example.projectservice.security;
 
 import lombok.RequiredArgsConstructor;
-import org.example.taskservice.security.model.User;
-import org.example.taskservice.security.utill.SecurityConstants;
-import org.example.taskservice.service.TaskService;
+import org.example.projectservice.security.model.User;
+import org.example.projectservice.security.utill.SecurityConstants;
+import org.example.projectservice.service.ProjectService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +20,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.example.taskservice.security.utill.SecurityConstants.RESOURCES_ACCESS;
+import static org.example.projectservice.security.utill.SecurityConstants.RESOURCES_ACCESS;
 
 @RequiredArgsConstructor
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private final TaskService userService;
+    private final ProjectService userService;
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
     private final JwtAuthConverterProperties properties;

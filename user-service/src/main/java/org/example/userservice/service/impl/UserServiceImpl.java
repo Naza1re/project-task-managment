@@ -10,7 +10,7 @@ import org.example.userservice.exception.UserNotFoundException;
 import org.example.userservice.mapper.UserMapper;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
-import org.example.userservice.service.KeycloakUserManagementService;
+import org.example.userservice.keycloak.service.KeycloakUserManagementService;
 import org.example.userservice.service.UserService;
 import org.example.userservice.utill.ExceptionMessages;
 import org.example.userservice.utill.KeycloakConstants;

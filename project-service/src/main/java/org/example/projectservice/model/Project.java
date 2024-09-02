@@ -1,6 +1,7 @@
 package org.example.projectservice.model;
 
 import lombok.*;
+import org.example.projectservice.model.status.Status;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +18,7 @@ public class Project {
     private String name;
     private String description;
     private String companyId;
+    private Status status;
 
 
 }

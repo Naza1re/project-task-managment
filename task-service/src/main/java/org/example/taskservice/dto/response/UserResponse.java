@@ -16,5 +16,4 @@ public class UserResponse {
     private String username;
     private List<String> projects;
     private String companyId;
-    private String phone;
 }

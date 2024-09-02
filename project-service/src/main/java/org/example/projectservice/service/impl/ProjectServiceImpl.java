@@ -7,12 +7,18 @@ import org.example.projectservice.dto.ProjectResponse;
 import org.example.projectservice.exception.ProjectNotFoundException;
 import org.example.projectservice.mapper.ProjectMapper;
 import org.example.projectservice.model.Project;
+import org.example.projectservice.model.status.Status;
 import org.example.projectservice.repository.ProjectRepository;
+import org.example.projectservice.security.model.User;
 import org.example.projectservice.service.ProjectService;
 import org.example.projectservice.utill.ExceptionMessages;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+
+import static org.example.projectservice.security.utill.SecurityConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +28,10 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper;
 
     @Override
-    public ProjectResponse createNewProject(ProjectRequest project) {
-        Project project1 = projectMapper.fromRequestToEntity(project);
-        System.out.println(project1);
-        Project savedProject = projectRepository.save(project1);
-        System.out.println(savedProject);
+    public ProjectResponse createNewProject(ProjectRequest request) {
+        Project project = projectMapper.fromRequestToEntity(request);
+        project.setStatus(Status.OPEN);
+        Project savedProject = projectRepository.save(project);
         return projectMapper.fromEntityToResponse(savedProject);
     }
 
@@ -60,6 +65,17 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = getOrThrow(id);
         projectRepository.delete(project);
         return projectMapper.fromEntityToResponse(project);
+    }
+
+    @Override
+    public User extractUserInfo(Jwt jwt) {
+        return User.builder()
+                .surname(jwt.getClaim(FAMILY_NAME))
+                .name(jwt.getClaim(GIVEN_NAME))
+                .id(UUID.fromString(jwt.getClaim(ID)))
+                .email(jwt.getClaim(EMAIL))
+                .username(jwt.getClaim(USERNAME))
+                .build();
     }
 
     private Project getOrThrow(String id) {

@@ -1,4 +1,4 @@
-package org.example.userservice.service;
+package org.example.userservice.keycloak.service;
 
 import org.example.userservice.dto.request.UserRequest;
 

@@ -19,6 +19,9 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+import static org.example.taskservice.security.utill.SecurityConstants.*;
 
 
 @Service
@@ -102,7 +105,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public User extractUserInfo(Jwt jwt) {
-        return null;
+        return User.builder()
+                .surname(jwt.getClaim(FAMILY_NAME))
+                .name(jwt.getClaim(GIVEN_NAME))
+                .id(UUID.fromString(jwt.getClaim(ID)))
+                .email(jwt.getClaim(EMAIL))
+                .username(jwt.getClaim(USERNAME))
+                .build();
     }
 
 

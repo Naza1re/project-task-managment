@@ -1,8 +1,8 @@
-package org.example.userservice.service.impl;
+package org.example.userservice.keycloak.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.userservice.dto.request.UserRequest;
-import org.example.userservice.service.KeycloakUserManagementService;
+import org.example.userservice.keycloak.service.KeycloakUserManagementService;
 import org.example.userservice.utill.KeycloakConstants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
@@ -35,10 +35,6 @@ public class KeycloakUserManagementServiceImpl implements KeycloakUserManagement
         if (attributes == null) {
             attributes = new HashMap<>();
         }
-        attributes.put(KeycloakConstants.USERNAME_ATTRIBUTE,Collections.singletonList(request.getId()));
-        attributes.put(KeycloakConstants.PHONE_ATTRIBUTE, Collections.singletonList(request.getPhone()));
-        attributes.put(KeycloakConstants.COMPANY_ID, Collections.singletonList(request.getCompanyId()));
-        attributes.put(KeycloakConstants.PROJECT_ID,Collections.singletonList(request.getProjects().get(0)));
         user.setAttributes(attributes);
 
         userResource.update(user);
