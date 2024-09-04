@@ -9,11 +9,15 @@ import org.example.companyservice.exception.CompanyNotFoundException;
 import org.example.companyservice.mapper.CompanyMapper;
 import org.example.companyservice.model.Company;
 import org.example.companyservice.repository.CompanyRepository;
+import org.example.companyservice.security.model.User;
 import org.example.companyservice.service.CompanyService;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
+import static org.example.companyservice.security.utill.SecurityConstants.*;
 import static org.example.companyservice.utill.ExceptionMessages.COMPANY_ALREADY_EXIST;
 import static org.example.companyservice.utill.ExceptionMessages.COMPANY_NOT_FOUND;
 
@@ -61,6 +65,17 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = getOrThrow(id);
         companyRepository.delete(company);
         return companyMapper.fromEntityToResponse(company);
+    }
+
+    @Override
+    public User extractUserInfo(Jwt jwt) {
+        return User.builder()
+                .surname(jwt.getClaim(FAMILY_NAME))
+                .name(jwt.getClaim(GIVEN_NAME))
+                .id(UUID.fromString(jwt.getClaim(ID)))
+                .email(jwt.getClaim(EMAIL))
+                .username(jwt.getClaim(USERNAME))
+                .build();
     }
 
 

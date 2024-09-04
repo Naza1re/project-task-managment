@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -95,13 +96,18 @@ public class UserServiceImpl implements UserService {
         User user = getOrThrow(userId);
 
         List<String> projects = user.getProjects();
-        projects.add(response.getId());
+        if (projects != null && !projects.isEmpty()) {
+            projects.add(response.getId());
+        }
+        else {
+            projects = new ArrayList<>();
+            projects.add(response.getId());
+        }
         user.setProjects(projects);
 
         User userToSave = userRepository.save(user);
 
         return mapper.fromEntityToResponse(userToSave);
-
     }
 
     private User getOrThrow(String id) {
