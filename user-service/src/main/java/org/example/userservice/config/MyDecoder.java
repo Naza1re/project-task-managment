@@ -25,8 +25,8 @@ public class MyDecoder implements ErrorDecoder {
                 response.status(),
                 exception.getMessage(),
                 response.request().httpMethod(),
-                exception,
-                null,
+                (Throwable) exception,
+                (Long) null,
                 response.request());
     }
 }
