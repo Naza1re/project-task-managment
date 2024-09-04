@@ -25,6 +25,7 @@ public class CompanyController {
     @GetMapping
     public ResponseEntity<CompanyListResponse> getAllCompany() {
         return ResponseEntity.ok(companyService.getAllCompany());
+
     }
 
     @GetMapping("/{id}")

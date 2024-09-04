@@ -25,6 +25,7 @@
     <module>project-service</module>
     <module>task-service</module>
     <module>eureka-server</module>
+    <module>companies-service</module>
   </modules>
 
   <dependencies>
