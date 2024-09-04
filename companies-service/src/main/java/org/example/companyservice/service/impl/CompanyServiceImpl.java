@@ -89,4 +89,5 @@ public class CompanyServiceImpl implements CompanyService {
             throw new CompanyAlreadyExistException(String.format(COMPANY_ALREADY_EXIST, name));
         }
     }
+
 }

@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: keycloakuser
       POSTGRES_PASSWORD: keycloakpass
     networks:
-      - keycloak-network
+      - task-management
   keycloak:
     image: quay.io/keycloak/keycloak:16.1.1
     ports:
@@ -28,13 +28,22 @@ services:
     volumes:
           - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
     networks:
-      - keycloak-network
+      - task-management
     depends_on:
       - postgres
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - task-management
 
 
 networks:
-  keycloak-network:
+  task-management:
     driver: bridge
 
 volumes:

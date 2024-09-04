@@ -29,7 +29,6 @@ public class CompanyController {
     @GetMapping
     public ResponseEntity<CompanyListResponse> getAllCompany() {
         return ResponseEntity.ok(companyService.getAllCompany());
-
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO')")
@@ -48,7 +47,7 @@ public class CompanyController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CEO')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<CompanyResponse> deleteCompnayById(
+    public ResponseEntity<CompanyResponse> deleteCompanyById(
             @PathVariable String id) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(companyService.deleteCompanyById(id));

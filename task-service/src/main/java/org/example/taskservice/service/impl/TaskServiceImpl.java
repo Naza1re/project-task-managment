@@ -5,6 +5,7 @@ import org.example.taskservice.client.ProjectFeignClient;
 import org.example.taskservice.client.UserFeignClient;
 import org.example.taskservice.dto.request.TaskRequest;
 import org.example.taskservice.dto.response.ProjectResponse;
+import org.example.taskservice.dto.response.TaskListResponse;
 import org.example.taskservice.dto.response.TaskResponse;
 import org.example.taskservice.dto.response.UserResponse;
 import org.example.taskservice.exception.TaskNotFoundException;
@@ -19,6 +20,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.example.taskservice.security.utill.SecurityConstants.*;
@@ -111,6 +114,17 @@ public class TaskServiceImpl implements TaskService {
                 .id(UUID.fromString(jwt.getClaim(ID)))
                 .email(jwt.getClaim(EMAIL))
                 .username(jwt.getClaim(USERNAME))
+                .build();
+    }
+
+    @Override
+    public TaskListResponse findTasksOfProject(String projectId) {
+        List<Task> tasks = taskRepository.findByProjectId(projectId);
+        List<TaskResponse> taskResponses = tasks.stream()
+                .map(taskMapper::fromEntityToResponse)
+                .toList();
+        return TaskListResponse.builder()
+                .tasks(taskResponses)
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package org.example.taskservice.service;
 
 import org.example.taskservice.dto.request.TaskRequest;
+import org.example.taskservice.dto.response.TaskListResponse;
 import org.example.taskservice.dto.response.TaskResponse;
 import org.example.taskservice.security.model.User;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +24,5 @@ public interface TaskService {
 
     User extractUserInfo(Jwt jwt);
 
+    TaskListResponse findTasksOfProject(String projectId);
 }

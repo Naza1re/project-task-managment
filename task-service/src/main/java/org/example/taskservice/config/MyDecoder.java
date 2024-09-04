@@ -14,7 +14,7 @@ public class MyDecoder implements ErrorDecoder {
         int status = response.status();
         String[] responseMessageSplit = exception.getMessage().split("\"message\"");
         String[] exMessageSplit = responseMessageSplit[responseMessageSplit.length - 1].split("\"");
-        String exMessage = exMessageSplit[exMessageSplit.length - 1];
+        String exMessage = exMessageSplit[exMessageSplit.length - 2];
         if (status == 400) {
             throw new FeignClientException(exMessage);
         }

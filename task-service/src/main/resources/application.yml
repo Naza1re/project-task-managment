@@ -21,6 +21,13 @@ spring:
         jwt:
           issuer-uri: http://localhost:8180/auth/realms/task-realm
           jwk-set-uri: http://localhost:8180/auth/realms/task-realm/protocol/openid-connect/certs
+  rabbitmq:
+    host: localhost
+    username: quest
+    password: quest
+    port: 5672
+    my-queue:
+      name: task
 server:
   port: 8082
 jwt:

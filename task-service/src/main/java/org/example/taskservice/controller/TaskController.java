@@ -2,6 +2,7 @@ package org.example.taskservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.taskservice.dto.request.TaskRequest;
+import org.example.taskservice.dto.response.TaskListResponse;
 import org.example.taskservice.dto.response.TaskResponse;
 import org.example.taskservice.service.TaskService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class TaskController {
             @PathVariable String projectId,
             @RequestBody TaskRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(taskService.createTask(request,projectId));
+                .body(taskService.createTask(request, projectId));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
@@ -30,12 +31,12 @@ public class TaskController {
     public ResponseEntity<TaskResponse> assignTaskToProject
             (@PathVariable String taskId,
              @PathVariable String userId) {
-        return ResponseEntity.ok(taskService.assignTaskToUserWithId(taskId,userId));
+        return ResponseEntity.ok(taskService.assignTaskToUserWithId(taskId, userId));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
     @PutMapping("/close/{taskId}")
-    public ResponseEntity<TaskResponse> closeTaskBYTaskId(
+    public ResponseEntity<TaskResponse> closeTaskByTaskId(
             @PathVariable String taskId) {
         return ResponseEntity.ok(taskService.closeTask(taskId));
     }
@@ -46,7 +47,6 @@ public class TaskController {
             @PathVariable String taskId) {
         return ResponseEntity.ok(taskService.openTaskByTaskId(taskId));
     }
-
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_USER')")
     @GetMapping("/{id}")
@@ -59,7 +59,7 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTuskById(
             @PathVariable String id, @RequestBody TaskRequest request) {
-        return ResponseEntity.ok(taskService.updateTaskById(id,request));
+        return ResponseEntity.ok(taskService.updateTaskById(id, request));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
@@ -70,5 +70,11 @@ public class TaskController {
                 .body(taskService.deleteTaskById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER','ROLE_USER')")
+    @GetMapping("/tasks/of/project/{projectId}")
+    public ResponseEntity<TaskListResponse> getTasksByProjectId(
+            @PathVariable String projectId) {
+        return ResponseEntity.ok(taskService.findTasksOfProject(projectId));
+    }
 
 }
