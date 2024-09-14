@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,6 +120,25 @@ public class TaskServiceImpl implements TaskService {
     public TaskListResponse findTasksOfProject(String projectId) {
         List<Task> tasks = taskRepository.findByProjectId(projectId);
         List<TaskResponse> taskResponses = tasks.stream()
+                .map(taskMapper::fromEntityToResponse)
+                .toList();
+        return TaskListResponse.builder()
+                .tasks(taskResponses)
+                .build();
+    }
+
+    @Override
+    public TaskResponse refuseTaskByTaskId(String taskId) {
+        Task task = getOrThrow(taskId);
+        task.setUserId(null);
+        Task taskToSave = taskRepository.save(task);
+        return taskMapper.fromEntityToResponse(taskToSave);
+    }
+
+    @Override
+    public TaskListResponse findAllTasksOfUser(String userId) {
+        List<Task> tasksOfUser = taskRepository.findAllByUserId(userId);
+        List<TaskResponse> taskResponses = tasksOfUser.stream()
                 .map(taskMapper::fromEntityToResponse)
                 .toList();
         return TaskListResponse.builder()

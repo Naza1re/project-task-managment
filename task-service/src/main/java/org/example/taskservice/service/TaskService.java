@@ -4,11 +4,10 @@ import org.example.taskservice.dto.request.TaskRequest;
 import org.example.taskservice.dto.response.TaskListResponse;
 import org.example.taskservice.dto.response.TaskResponse;
 import org.example.taskservice.security.model.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 public interface TaskService {
-    TaskResponse createTask(TaskRequest request,String projectId);
+    TaskResponse createTask(TaskRequest request, String projectId);
 
     TaskResponse getTaskById(String id);
 
@@ -25,4 +24,9 @@ public interface TaskService {
     User extractUserInfo(Jwt jwt);
 
     TaskListResponse findTasksOfProject(String projectId);
+
+    TaskResponse refuseTaskByTaskId(String taskId);
+
+    TaskListResponse findAllTasksOfUser(String userId);
+
 }

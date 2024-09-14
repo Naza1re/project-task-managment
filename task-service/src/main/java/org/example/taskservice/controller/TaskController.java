@@ -77,4 +77,20 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findTasksOfProject(projectId));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PutMapping("/refuse/{taskId}")
+    public ResponseEntity<TaskResponse> refuseTaskByTaskId(
+            @PathVariable String taskId
+    ) {
+        return ResponseEntity.ok(taskService.refuseTaskByTaskId(taskId));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_PROJECT_MANAGER')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<TaskListResponse> getAllTasksOfUser(
+            @PathVariable String userId
+    ) {
+        return ResponseEntity.ok(taskService.findAllTasksOfUser(userId));
+    }
+
 }
