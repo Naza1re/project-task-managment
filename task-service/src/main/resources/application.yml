@@ -23,11 +23,14 @@ spring:
           jwk-set-uri: http://localhost:8180/auth/realms/task-realm/protocol/openid-connect/certs
   rabbitmq:
     host: localhost
-    username: quest
-    password: quest
+    username: rab
+    password: 1234
     port: 5672
     my-queue:
-      name: task
+      name: taskQueue
+    exchange:
+      name: taskExchange
+    virtual-host: vhost
 server:
   port: 8082
 jwt:

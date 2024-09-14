@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: bpmn-task-process
+  rabbitmq:
+    host: localhost
+    virtual-host: vhost
+    username: rab
+    password: 1234
+    queue:
+      name: taskQueue
+server:
+  port: 8086
+

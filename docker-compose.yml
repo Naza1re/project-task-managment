@@ -31,15 +31,26 @@ services:
       - task-management
     depends_on:
       - postgres
+
+
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:latest
     container_name: rabbitmq
-    restart: always
+    hostname: rabbitmq
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Moscow
+      RABBITMQ_DEFAULT_USER: rab
+      RABBITMQ_DEFAULT_PASS: 1234
+      RABBITMQ_DEFAULT_VHOST: vhost
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq￼
     ports:
-      - "15672:15672"
       - "5672:5672"
+      - "15672:15672"
     networks:
       - task-management
+
 
 
 networks:

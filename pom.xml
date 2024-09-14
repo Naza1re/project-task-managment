@@ -20,12 +20,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
   <modules>
     <module>user-service</module>
     <module>project-service</module>
     <module>task-service</module>
     <module>eureka-server</module>
     <module>companies-service</module>
+    <module>bpmn-task-process</module>
   </modules>
 
   <dependencies>

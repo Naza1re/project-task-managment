@@ -12,6 +12,7 @@ import org.example.taskservice.exception.TaskNotFoundException;
 import org.example.taskservice.mapper.TaskMapper;
 import org.example.taskservice.model.Task;
 import org.example.taskservice.model.status.Status;
+import org.example.taskservice.rabbit.TaskSender;
 import org.example.taskservice.repository.TaskRepository;
 import org.example.taskservice.security.model.User;
 import org.example.taskservice.service.TaskService;
@@ -34,12 +35,13 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectFeignClient projectFeignClient;
     private final TaskMapper taskMapper;
     private final UserFeignClient userFeignClient;
+    private final TaskSender taskSender;
 
     @Override
     public TaskResponse createTask(TaskRequest request, String projectId) {
 
         ProjectResponse response = projectFeignClient.getProjectById(projectId);
-
+        taskSender.sendTask("121121212");
         Task taskToSave = taskMapper.fromRequestToEntity(request);
         taskToSave.setCreatedAt(LocalDateTime.now());
         taskToSave.setProjectId(response.getId());

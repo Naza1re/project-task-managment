@@ -2,7 +2,7 @@ package org.example.taskservice.rabbit;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,12 @@ public class TaskSender {
     @Value("${spring.rabbitmq.my-queue.name}")
     private String queueTask;
 
-    private final AmqpTemplate amqpTemplate;
+    @Value("${spring.rabbitmq.exchange.name}")
+    private String taskExchange;
 
-    public void sendTask(String task) {
-        amqpTemplate.convertAndSend(queueTask,task);
+    private final RabbitTemplate rabbitTemplate;
+
+    public void sendTask(String taskId) {
+        rabbitTemplate.convertAndSend(taskExchange, "first.key", taskId);
     }
 }
