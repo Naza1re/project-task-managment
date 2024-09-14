@@ -24,6 +24,7 @@ import static org.example.companyservice.utill.ExceptionMessages.COMPANY_NOT_FOU
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
+
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
 
