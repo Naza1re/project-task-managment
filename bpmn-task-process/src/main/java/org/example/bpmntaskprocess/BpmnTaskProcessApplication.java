@@ -1,0 +1,13 @@
+package org.example.bpmntaskprocess;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BpmnTaskProcessApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BpmnTaskProcessApplication.class, args);
+	}
+
+}
