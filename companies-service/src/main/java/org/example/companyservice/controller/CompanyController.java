@@ -1,7 +1,7 @@
 package org.example.companyservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.companyservice.dto.CompanyListResponse;
+import org.example.companyservice.dto.response.CompanyListResponse;
 import org.example.companyservice.dto.request.CompanyRequest;
 import org.example.companyservice.dto.response.CompanyResponse;
 import org.example.companyservice.service.CompanyService;

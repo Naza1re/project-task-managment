@@ -28,7 +28,10 @@ jwt:
       resource-id: task-client
 server:
   port: 8083
-
+service:
+  company:
+    name: company-service
+    path: /api/v1/company
 eureka:
   client:
     service-url:

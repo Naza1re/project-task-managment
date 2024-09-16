@@ -41,7 +41,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponse createTask(TaskRequest request, String projectId) {
 
         ProjectResponse response = projectFeignClient.getProjectById(projectId);
-        taskSender.sendTask("121121212");
         Task taskToSave = taskMapper.fromRequestToEntity(request);
         taskToSave.setCreatedAt(LocalDateTime.now());
         taskToSave.setProjectId(response.getId());

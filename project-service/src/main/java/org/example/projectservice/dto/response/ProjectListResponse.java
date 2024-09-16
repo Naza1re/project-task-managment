@@ -1,4 +1,4 @@
-package org.example.projectservice.dto;
+package org.example.projectservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

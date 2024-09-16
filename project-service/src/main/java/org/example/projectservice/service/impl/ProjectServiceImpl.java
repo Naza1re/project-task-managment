@@ -1,9 +1,11 @@
 package org.example.projectservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.projectservice.dto.ProjectListResponse;
-import org.example.projectservice.dto.ProjectRequest;
-import org.example.projectservice.dto.ProjectResponse;
+import org.example.projectservice.client.CompanyFeignClient;
+import org.example.projectservice.dto.response.CompanyResponse;
+import org.example.projectservice.dto.response.ProjectListResponse;
+import org.example.projectservice.dto.request.ProjectRequest;
+import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.exception.ProjectNotFoundException;
 import org.example.projectservice.mapper.ProjectMapper;
 import org.example.projectservice.model.Project;
@@ -26,9 +28,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final CompanyFeignClient companyFeignClient;
 
     @Override
     public ProjectResponse createNewProject(ProjectRequest request) {
+        CompanyResponse companyResponse = companyFeignClient.getCompanyById(request.getCompanyId());
         Project project = projectMapper.fromRequestToEntity(request);
         project.setStatus(Status.OPEN);
         Project savedProject = projectRepository.save(project);

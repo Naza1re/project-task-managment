@@ -1,4 +1,4 @@
-package org.example.projectservice.dto;
+package org.example.projectservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectRequest {
+public class ProjectResponse {
+    private String id;
     private String name;
     private String description;
     private String companyId;
+    private String status;
 }

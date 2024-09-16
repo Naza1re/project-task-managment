@@ -1,9 +1,9 @@
 package org.example.projectservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.projectservice.dto.ProjectListResponse;
-import org.example.projectservice.dto.ProjectRequest;
-import org.example.projectservice.dto.ProjectResponse;
+import org.example.projectservice.dto.response.ProjectListResponse;
+import org.example.projectservice.dto.request.ProjectRequest;
+import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

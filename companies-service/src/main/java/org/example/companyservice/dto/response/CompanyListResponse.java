@@ -1,10 +1,9 @@
-package org.example.companyservice.dto;
+package org.example.companyservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.companyservice.dto.response.CompanyResponse;
 
 import java.util.List;
 

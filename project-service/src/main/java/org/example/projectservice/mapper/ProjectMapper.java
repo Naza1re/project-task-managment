@@ -1,8 +1,8 @@
 package org.example.projectservice.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.example.projectservice.dto.ProjectRequest;
-import org.example.projectservice.dto.ProjectResponse;
+import org.example.projectservice.dto.request.ProjectRequest;
+import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.model.Project;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

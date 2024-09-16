@@ -1,6 +1,6 @@
 package org.example.companyservice.service;
 
-import org.example.companyservice.dto.CompanyListResponse;
+import org.example.companyservice.dto.response.CompanyListResponse;
 import org.example.companyservice.dto.request.CompanyRequest;
 import org.example.companyservice.dto.response.CompanyResponse;
 import org.example.companyservice.security.model.User;

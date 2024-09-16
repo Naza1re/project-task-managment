@@ -1,8 +1,8 @@
 package org.example.projectservice.service;
 
-import org.example.projectservice.dto.ProjectListResponse;
-import org.example.projectservice.dto.ProjectRequest;
-import org.example.projectservice.dto.ProjectResponse;
+import org.example.projectservice.dto.response.ProjectListResponse;
+import org.example.projectservice.dto.request.ProjectRequest;
+import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.security.model.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
