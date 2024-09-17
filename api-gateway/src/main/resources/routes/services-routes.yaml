@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: company-service
+          uri: lb://company-service
+          predicates:
+            - Path=/api/v1/company/**
+
+        - id: task-service
+          uri: lb://task-service
+          predicates:
+            - Path=/api/v1/task/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user/**
+
+        - id: project-service
+          uri: lb://project-service
+          predicates:
+            - Path=/api/v1/project/**
