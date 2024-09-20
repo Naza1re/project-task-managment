@@ -8,7 +8,10 @@ import org.example.taskservice.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/v1/task")
@@ -21,31 +24,35 @@ public class TaskController {
     @PostMapping("/{projectId}")
     public ResponseEntity<TaskResponse> createTaskForProject(
             @PathVariable String projectId,
-            @RequestBody TaskRequest request) {
+            @RequestBody TaskRequest request,
+            @AuthenticationPrincipal OAuth2User user) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(taskService.createTask(request, projectId));
+                .body(taskService.createTask(request, projectId, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
     @PutMapping("/assign/{taskId}/to/{userId}")
     public ResponseEntity<TaskResponse> assignTaskToProject
             (@PathVariable String taskId,
-             @PathVariable String userId) {
-        return ResponseEntity.ok(taskService.assignTaskToUserWithId(taskId, userId));
+             @PathVariable String userId,
+             @AuthenticationPrincipal OAuth2User user) {
+        return ResponseEntity.ok(taskService.assignTaskToUserWithId(taskId, userId, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
     @PutMapping("/close/{taskId}")
     public ResponseEntity<TaskResponse> closeTaskByTaskId(
-            @PathVariable String taskId) {
-        return ResponseEntity.ok(taskService.closeTask(taskId));
+            @PathVariable String taskId,
+            @AuthenticationPrincipal OAuth2User user) {
+        return ResponseEntity.ok(taskService.closeTask(taskId, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_ADMIN')")
     @PutMapping("/open/{taskId}")
     public ResponseEntity<TaskResponse> openTask(
-            @PathVariable String taskId) {
-        return ResponseEntity.ok(taskService.openTaskByTaskId(taskId));
+            @PathVariable String taskId,
+            @AuthenticationPrincipal OAuth2User user) {
+        return ResponseEntity.ok(taskService.openTaskByTaskId(taskId, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_USER')")
@@ -58,8 +65,10 @@ public class TaskController {
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_USER')")
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTuskById(
-            @PathVariable String id, @RequestBody TaskRequest request) {
-        return ResponseEntity.ok(taskService.updateTaskById(id, request));
+            @PathVariable String id,
+            @RequestBody TaskRequest request,
+            @AuthenticationPrincipal OAuth2User user) {
+        return ResponseEntity.ok(taskService.updateTaskById(id, request, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN')")
@@ -80,9 +89,10 @@ public class TaskController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @PutMapping("/refuse/{taskId}")
     public ResponseEntity<TaskResponse> refuseTaskByTaskId(
-            @PathVariable String taskId
+            @PathVariable String taskId,
+            @AuthenticationPrincipal OAuth2User user
     ) {
-        return ResponseEntity.ok(taskService.refuseTaskByTaskId(taskId));
+        return ResponseEntity.ok(taskService.refuseTaskByTaskId(taskId, user));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_PROJECT_MANAGER')")

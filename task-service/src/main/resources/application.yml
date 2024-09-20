@@ -15,22 +15,23 @@ spring:
             authorization-grant-type: authorization_code
         provider:
           keycloak:
-            issuer-uri: http://localhost:8180/auth/realms/task-realm
+            issuer-uri: http://keycloak:8080/auth/realms/task-realm
             user-name-attribute: preferred_username
       resource-server:
         jwt:
-          issuer-uri: http://localhost:8180/auth/realms/task-realm
-          jwk-set-uri: http://localhost:8180/auth/realms/task-realm/protocol/openid-connect/certs
+          issuer-uri: http://keycloak:8080/auth/realms/task-realm
+          jwk-set-uri: http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
   rabbitmq:
     host: localhost
-    username: rab
-    password: 1234
+    username: root
+    password: root
     port: 5672
     my-queue:
       name: taskQueue
     exchange:
       name: taskExchange
     virtual-host: vhost
+
 server:
   port: 8082
 jwt:

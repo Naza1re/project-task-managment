@@ -24,6 +24,8 @@ public class Task {
     private String userId;
     private LocalDateTime createdAt;
     private LocalDateTime closeAt;
+    private LocalDateTime lastUpdatedAt;
+    private String lastChangedBy;
     private String name;
     private List<String> referenceTaskIds;
     private Status status;

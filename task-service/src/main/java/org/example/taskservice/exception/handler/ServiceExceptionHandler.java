@@ -1,9 +1,6 @@
 package org.example.taskservice.exception.handler;
 
-import org.example.taskservice.exception.FeignClientException;
-import org.example.taskservice.exception.NotFoundException;
-import org.example.taskservice.exception.ProjectClosedException;
-import org.example.taskservice.exception.TaskNotFoundException;
+import org.example.taskservice.exception.*;
 import org.example.taskservice.exception.error.AppError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,17 @@ public class ServiceExceptionHandler {
     ) {
         String message = exception.getMessage();
         return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(AppError.builder()
+                        .message(message)
+                        .build());
+    }
+
+    @ExceptionHandler(IllegalUserAccessException.class)
+    public ResponseEntity<AppError> handlerIllegalAccessException(
+            RuntimeException exception
+    ) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body(AppError.builder()
                         .message(message)
                         .build());

@@ -7,12 +7,11 @@ import org.example.userservice.dto.response.ProjectResponse;
 import org.example.userservice.dto.response.UserResponse;
 import org.example.userservice.dto.response.UserResponseList;
 import org.example.userservice.exception.UserNotFoundException;
+import org.example.userservice.keycloak.service.KeycloakUserManagementService;
 import org.example.userservice.mapper.UserMapper;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
-import org.example.userservice.keycloak.service.KeycloakUserManagementService;
 import org.example.userservice.service.UserService;
-import org.example.userservice.utill.ExceptionMessages;
 import org.example.userservice.utill.KeycloakConstants;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -24,6 +23,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.example.userservice.security.utill.SecurityConstants.*;
+import static org.example.userservice.utill.ExceptionMessages.USER_NOT_FOUND;
+import static org.example.userservice.utill.KeycloakConstants.ROLE_MANAGER_PROJECT;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
     private final KeycloakUserManagementService keycloakUserManagementService;
     private final ProjectFeignClient projectFeignClient;
+    private final UserMapper userMapper;
 
     @Override
     public UserResponse createUser(OAuth2User oAuth2User, UserRequest request) {
@@ -98,8 +100,7 @@ public class UserServiceImpl implements UserService {
         List<String> projects = user.getProjects();
         if (projects != null && !projects.isEmpty()) {
             projects.add(response.getId());
-        }
-        else {
+        } else {
             projects = new ArrayList<>();
             projects.add(response.getId());
         }
@@ -110,9 +111,21 @@ public class UserServiceImpl implements UserService {
         return mapper.fromEntityToResponse(userToSave);
     }
 
+    @Override
+    public UserResponseList findAllManagerAndUsers() {
+        List<User> managerslist = userRepository.findAllByRoles(ROLE_MANAGER_PROJECT);
+        List<UserResponse> managersResponseList = managerslist.stream()
+                .map(mapper::fromEntityToResponse)
+                .toList();
+
+        return UserResponseList.builder()
+                .userResponseList(managersResponseList)
+                .build();
+    }
+
     private User getOrThrow(String id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(String.format(ExceptionMessages.USER_NOT_FOUND, id)));
+                .orElseThrow(() -> new UserNotFoundException(String.format(USER_NOT_FOUND, id)));
     }
 
     private void setAdditionFieldsForOauth2User(User user, OAuth2User oAuth2User) {

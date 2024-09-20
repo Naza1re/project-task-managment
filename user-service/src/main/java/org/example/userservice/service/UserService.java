@@ -21,4 +21,6 @@ public interface UserService {
     User extractUserInfo(Jwt jwt);
 
     UserResponse addProjectToUser(String userId, String projectId);
+
+    UserResponseList findAllManagerAndUsers();
 }

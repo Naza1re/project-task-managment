@@ -66,4 +66,10 @@ public class UserController {
         return ResponseEntity.ok(userService.addProjectToUser(userId,projectId));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @GetMapping("/admins")
+    public ResponseEntity<UserResponseList> getAllAdminsAndProjectManagers() {
+        return ResponseEntity.ok(userService.findAllManagerAndUsers());
+    }
+
 }

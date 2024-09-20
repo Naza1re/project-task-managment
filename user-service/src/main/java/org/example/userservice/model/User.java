@@ -22,4 +22,5 @@ public class User {
     private String email;
     private List<String> projects;
     private String companyId;
+    private String roles;
 }

@@ -1,6 +1,50 @@
 version: '3'
 
 services:
+
+  eureka:
+    image: eureka-server
+    container_name: eureka-server
+    ports:
+      - '8090:8090'
+    networks:
+      - task-management
+
+  task-service:
+    image: task-service
+    container_name: task-service
+    ports:
+      - '8082:8082'
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/task
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8090/eureka
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8180/auth/realms/task-realm/protocol/openid-connect/certs
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_VIRTUAL_HOST=vhost
+    depends_on:
+      - eureka
+      - mongodb
+      - keycloak
+      - rabbitmq
+    networks:
+      - task-management
+
+  company-service:
+    image: company-service
+    container_name: company-service
+    ports:
+      - '8084:8084'
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/company
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8090/eureka
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
+    depends_on:
+      - mongodb
+      - keycloak
+      - eureka
+    networks:
+      - task-management
+
   postgres:
     image: postgres
     volumes:
@@ -11,10 +55,12 @@ services:
       POSTGRES_PASSWORD: keycloakpass
     networks:
       - task-management
+
   keycloak:
     image: quay.io/keycloak/keycloak:16.1.1
+    hostname: keycloak
     ports:
-      - 8180:8080
+      - 8080:8080
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -26,12 +72,21 @@ services:
       KEYCLOAK_PASSWORD: adminpass
       KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
     volumes:
-          - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+        - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
     networks:
       - task-management
+    links:
+      - "postgres:postgres"
     depends_on:
       - postgres
 
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    ports:
+      - 27070:27017
+    networks:
+      - task-management
 
   rabbitmq:
     image: rabbitmq:latest
@@ -40,8 +95,8 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Moscow
-      RABBITMQ_DEFAULT_USER: rab
-      RABBITMQ_DEFAULT_PASS: 1234
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: root
       RABBITMQ_DEFAULT_VHOST: vhost
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq￼
@@ -50,8 +105,6 @@ services:
       - "15672:15672"
     networks:
       - task-management
-
-
 
 networks:
   task-management:
