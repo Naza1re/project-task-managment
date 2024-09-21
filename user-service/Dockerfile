@@ -1,8 +1,8 @@
 FROM eclipse-temurin:21-jre as builder
 WORKDIR workspace
 ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} task-service.jar
-RUN java -Djarmode=layertools -jar task-service.jar extract
+COPY ${JAR_FILE} user-service.jar
+RUN java -Djarmode=layertools -jar user-service.jar extract
 
 FROM eclipse-temurin:21-jre
 WORKDIR workspace

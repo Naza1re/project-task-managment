@@ -20,6 +20,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("Hello wotrld \n\n\n\n\n\n");
         http
                 .oauth2ResourceServer(oauth
                         -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))

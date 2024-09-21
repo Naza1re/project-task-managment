@@ -15,15 +15,15 @@ spring:
             authorization-grant-type: authorization_code
         provider:
           keycloak:
-            issuer-uri: http://localhost:8180/auth/realms/task-realm
+            issuer-uri: http://keycloak:8080/auth/realms/task-realm
             user-name-attribute: preferred_username
       resource-server:
         jwt:
-          issuer-uri: http://localhost:8180/auth/realms/task-realm
-          jwk-set-uri: http://localhost:8180/auth/realms/task-realm/protocol/openid-connect/certs
+          issuer-uri: http://keycloak:8080/auth/realms/task-realm
+          jwk-set-uri: http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
 
 keycloak:
-  server-url: http://localhost:8180/auth
+  server-url: http://keycloak:8180/auth
   realm: task-realm
   username: admin
   password: adminpass

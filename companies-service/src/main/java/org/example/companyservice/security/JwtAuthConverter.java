@@ -33,11 +33,13 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     private final JwtAuthConverterProperties properties;
 
     public AbstractAuthenticationToken convert(Jwt jwt) {
+        System.out.println("Trying getting jwt: ");
         System.out.println(jwt);
         Collection<GrantedAuthority> authorities = Stream.concat(
                 jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
                 extractResourceRoles(jwt).stream()).collect(Collectors.toSet());
         User user = companyService.extractUserInfo(jwt);
+        System.out.println(user.getAttributes());
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 user,
                 null,
@@ -59,6 +61,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
                 || (resourceRoles = (Collection<String>) resource.get(SecurityConstants.ROLES)) == null) {
             return Set.of();
         }
+        System.out.println("Resource : "+resource);
+        System.out.println("resourcesRoles : "+resourceRoles);
         return resourceRoles.stream()
                 .map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toSet());
