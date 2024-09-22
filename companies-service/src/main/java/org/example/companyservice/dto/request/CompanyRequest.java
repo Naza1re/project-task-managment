@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CompanyRequest {
+public class    CompanyRequest {
     private String companyName;
     private String companyCeo;
     private String officeAddress;

@@ -18,4 +18,10 @@ public interface ProjectService {
     ProjectResponse deleteProjectById(String id);
 
     User extractUserInfo(Jwt jwt);
+
+    ProjectResponse closeProject(String projectId);
+
+    ProjectResponse freezeProject(String projectId);
+
+    ProjectResponse openProject(String projectId);
 }

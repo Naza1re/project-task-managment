@@ -1,8 +1,8 @@
 package org.example.projectservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.projectservice.dto.response.ProjectListResponse;
 import org.example.projectservice.dto.request.ProjectRequest;
+import org.example.projectservice.dto.response.ProjectListResponse;
 import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.service.ProjectService;
 import org.springframework.http.HttpStatus;
@@ -31,24 +31,44 @@ public class ProjectController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable String id) {
-        return ResponseEntity.ok(projectService.getProjectById(id));
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> getProject(@PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.getProjectById(projectId));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
-    @PutMapping("/{id}")
+    @PutMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> updateProjectById(
-            @PathVariable String id, ProjectRequest request) {
-        return ResponseEntity.ok(projectService.updateProjectById(id, request));
+            @PathVariable String projectId, ProjectRequest request) {
+        return ResponseEntity.ok(projectService.updateProjectById(projectId, request));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> deleteProjectById(
-            @PathVariable String id) {
+            @PathVariable String projectId) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(projectService.deleteProjectById(id));
+                .body(projectService.deleteProjectById(projectId));
+    }
 
+    @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
+    @PutMapping("/{projectId}/close")
+    public ResponseEntity<ProjectResponse> closeProject(
+            @PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.closeProject(projectId));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
+    @PutMapping("/{projectId}/freeze")
+    public ResponseEntity<ProjectResponse> freezeProject(
+            @PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.freezeProject(projectId));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_PROJECT_MANAGER','ROLE_ADMIN','ROLE_CEO')")
+    @PutMapping("/{projectId}/open")
+    public ResponseEntity<ProjectResponse> openProject(
+            @PathVariable String projectId) {
+        return ResponseEntity.ok(projectService.openProject(projectId));
     }
 }

@@ -2,9 +2,9 @@ package org.example.projectservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.projectservice.client.CompanyFeignClient;
+import org.example.projectservice.dto.request.ProjectRequest;
 import org.example.projectservice.dto.response.CompanyResponse;
 import org.example.projectservice.dto.response.ProjectListResponse;
-import org.example.projectservice.dto.request.ProjectRequest;
 import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.exception.ProjectNotFoundException;
 import org.example.projectservice.mapper.ProjectMapper;
@@ -80,6 +80,30 @@ public class ProjectServiceImpl implements ProjectService {
                 .email(jwt.getClaim(EMAIL))
                 .username(jwt.getClaim(USERNAME))
                 .build();
+    }
+
+    @Override
+    public ProjectResponse closeProject(String projectId) {
+        Project project = getOrThrow(projectId);
+        project.setStatus(Status.CLOSED);
+        Project savedProject = projectRepository.save(project);
+        return projectMapper.fromEntityToResponse(savedProject);
+    }
+
+    @Override
+    public ProjectResponse freezeProject(String projectId) {
+        Project project = getOrThrow(projectId);
+        project.setStatus(Status.FREEZE);
+        Project savedProject = projectRepository.save(project);
+        return projectMapper.fromEntityToResponse(savedProject);
+    }
+
+    @Override
+    public ProjectResponse openProject(String projectId) {
+        Project project = getOrThrow(projectId);
+        project.setStatus(Status.OPEN);
+        Project savedProject = projectRepository.save(project);
+        return projectMapper.fromEntityToResponse(savedProject);
     }
 
     private Project getOrThrow(String id) {
