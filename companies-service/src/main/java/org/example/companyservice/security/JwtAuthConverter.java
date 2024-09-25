@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.companyservice.security.model.User;
 import org.example.companyservice.security.utill.SecurityConstants;
 import org.example.companyservice.service.CompanyService;
-import org.example.companyservice.service.CompanyService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +32,6 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     private final JwtAuthConverterProperties properties;
 
     public AbstractAuthenticationToken convert(Jwt jwt) {
-        System.out.println("Trying getting jwt: ");
-        System.out.println(jwt);
         Collection<GrantedAuthority> authorities = Stream.concat(
                 jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
                 extractResourceRoles(jwt).stream()).collect(Collectors.toSet());
@@ -61,10 +58,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
                 || (resourceRoles = (Collection<String>) resource.get(SecurityConstants.ROLES)) == null) {
             return Set.of();
         }
-        System.out.println("Resource : "+resource);
-        System.out.println("resourcesRoles : "+resourceRoles);
         return resourceRoles.stream()
-                .map(role -> new SimpleGrantedAuthority(role))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
     }
 }
