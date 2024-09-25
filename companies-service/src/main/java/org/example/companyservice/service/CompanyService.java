@@ -1,21 +1,21 @@
 package org.example.companyservice.service;
 
-import org.example.companyservice.dto.response.CompanyListResponse;
-import org.example.companyservice.dto.request.CompanyRequest;
-import org.example.companyservice.dto.response.CompanyResponse;
+import org.example.companyservice.model.Company;
 import org.example.companyservice.security.model.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.util.List;
+
 public interface CompanyService {
-    CompanyResponse createCompany(CompanyRequest companyRequest);
+    Company createCompany(Company company);
 
-    CompanyListResponse getAllCompany();
+    List<Company> getAllCompany();
 
-    CompanyResponse getCompanyById(String id);
+    Company getCompanyById(String id);
 
-    CompanyResponse updateCompanyById(String id,CompanyRequest request);
+    Company updateCompanyById(String id, Company request);
 
-    CompanyResponse deleteCompanyById(String id);
+    Company deleteCompanyById(String id);
 
     User extractUserInfo(Jwt jwt);
 }

@@ -1,9 +1,6 @@
 package org.example.companyservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.companyservice.dto.response.CompanyListResponse;
-import org.example.companyservice.dto.request.CompanyRequest;
-import org.example.companyservice.dto.response.CompanyResponse;
 import org.example.companyservice.exception.CompanyAlreadyExistException;
 import org.example.companyservice.exception.CompanyNotFoundException;
 import org.example.companyservice.mapper.CompanyMapper;
@@ -29,43 +26,36 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyMapper companyMapper;
 
     @Override
-    public CompanyResponse createCompany(CompanyRequest companyRequest) {
+    public Company createCompany(Company companyRequest) {
         checkingCompanyExistByName(companyRequest.getCompanyName());
-        Company companyToSave = companyMapper.fromRequestToEntity(companyRequest);
-        Company savedCompany = companyRepository.save(companyToSave);
-        return companyMapper.fromEntityToResponse(savedCompany);
+
+        return companyRepository.save(companyRequest);
     }
 
     @Override
-    public CompanyListResponse getAllCompany() {
-        List<Company> companyList = companyRepository.findAll();
-        List<CompanyResponse> companyResponseList = companyList.stream()
-                .map(companyMapper::fromEntityToResponse)
-                .toList();
-        return new CompanyListResponse(companyResponseList);
+    public List<Company> getAllCompany() {
+        return companyRepository.findAll();
     }
 
     @Override
-    public CompanyResponse getCompanyById(String id) {
-        Company company = getOrThrow(id);
-        return companyMapper.fromEntityToResponse(company);
+    public Company getCompanyById(String id) {
+        return getOrThrow(id);
     }
 
     @Override
-    public CompanyResponse updateCompanyById(String id, CompanyRequest request) {
+    public Company updateCompanyById(String id, Company request) {
 
         Company company = getOrThrow(id);
-        Company newCompany = companyMapper.fromRequestToEntity(request);
-        newCompany.setId(company.getId());
-        Company savedCompany = companyRepository.save(newCompany);
-        return companyMapper.fromEntityToResponse(savedCompany);
+        company.setId(company.getId());
+
+        return companyRepository.save(company);
     }
 
     @Override
-    public CompanyResponse deleteCompanyById(String id) {
+    public Company deleteCompanyById(String id) {
         Company company = getOrThrow(id);
         companyRepository.delete(company);
-        return companyMapper.fromEntityToResponse(company);
+        return company;
     }
 
     @Override

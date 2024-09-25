@@ -3,7 +3,7 @@ version: '3'
 services:
 
   api-gateway:
-    image: api-gateway
+    image: naza1re/api-gateway
     container_name: api-gateway
     ports:
       - '8070:8070'
@@ -16,7 +16,7 @@ services:
 
 
   eureka:
-    image: eureka-server
+    image: naza1re/eureka-server
     container_name: eureka-server
     ports:
       - '8090:8090'
@@ -24,7 +24,7 @@ services:
       - task-management
 
   task-service:
-    image: task-service
+    image: naza1re/task-service
     container_name: task-service
     ports:
       - '8082:8082'
@@ -44,7 +44,7 @@ services:
 
   user-service:
     container_name: user-service
-    image: user-service
+    image: naza1re/user-service
     ports:
       - '8081:8081'
     environment:
@@ -60,7 +60,7 @@ services:
 
   project-service:
     container_name: project-service
-    image: project-service
+    image: naza1re/project-service
     ports:
       - '8083:8083'
     environment:
@@ -75,7 +75,7 @@ services:
       - task-management
 
   company-service:
-    image: company-service
+    image: naza1re/company-service
     container_name: company-service
     ports:
       - '8084:8084'

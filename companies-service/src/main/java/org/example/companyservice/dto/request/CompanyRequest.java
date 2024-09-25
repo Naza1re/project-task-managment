@@ -1,15 +1,17 @@
 package org.example.companyservice.dto.request;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class    CompanyRequest {
+public class CompanyRequest {
     private String companyName;
     private String companyCeo;
     private String officeAddress;
