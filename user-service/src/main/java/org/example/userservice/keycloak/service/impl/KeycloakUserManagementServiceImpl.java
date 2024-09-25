@@ -1,9 +1,8 @@
 package org.example.userservice.keycloak.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.userservice.dto.request.UserRequest;
 import org.example.userservice.keycloak.service.KeycloakUserManagementService;
-import org.example.userservice.utill.KeycloakConstants;
+import org.example.userservice.model.User;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -11,7 +10,6 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,7 @@ public class KeycloakUserManagementServiceImpl implements KeycloakUserManagement
     private String realm;
 
     @Override
-    public void updateUser(String id, UserRequest request) {
+    public void updateUser(String id, User request) {
         UsersResource usersResource = keycloak.realm(realm).users();
         UserResource userResource = usersResource.get(id);
         UserRepresentation user = userResource.toRepresentation();

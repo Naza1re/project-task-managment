@@ -1,26 +1,25 @@
 package org.example.userservice.service;
 
-import org.example.userservice.dto.request.UserRequest;
-import org.example.userservice.dto.response.UserResponse;
-import org.example.userservice.dto.response.UserResponseList;
-import org.example.userservice.security.model.User;
+import org.example.userservice.model.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.util.List;
+
 public interface UserService {
-    UserResponse createUser(OAuth2User user, UserRequest request);
+    org.example.userservice.model.User createUser(OAuth2User user, org.example.userservice.model.User request);
 
-    UserResponse findUserById(String id);
+    User findUserById(String id);
 
-    UserResponseList findAllUsers();
+    List<User> findAllUsers();
 
-    UserResponse updateUserById(String id, UserRequest request);
+    User updateUserById(String id, User request);
 
-    UserResponse deleteUserById(String id);
+    User deleteUserById(String id);
 
-    User extractUserInfo(Jwt jwt);
+    org.example.userservice.security.model.User extractUserInfo(Jwt jwt);
 
-    UserResponse addProjectToUser(String userId, String projectId);
+    User addProjectToUser(String userId, String projectId);
 
-    UserResponseList findAllManagerAndUsers();
+    List<User> findAllManagerAndUsers();
 }

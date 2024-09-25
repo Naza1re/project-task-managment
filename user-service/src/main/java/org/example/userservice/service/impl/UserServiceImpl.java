@@ -2,10 +2,7 @@ package org.example.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.userservice.client.ProjectFeignClient;
-import org.example.userservice.dto.request.UserRequest;
 import org.example.userservice.dto.response.ProjectResponse;
-import org.example.userservice.dto.response.UserResponse;
-import org.example.userservice.dto.response.UserResponseList;
 import org.example.userservice.exception.UserNotFoundException;
 import org.example.userservice.keycloak.service.KeycloakUserManagementService;
 import org.example.userservice.mapper.UserMapper;
@@ -31,54 +28,43 @@ import static org.example.userservice.utill.KeycloakConstants.ROLE_MANAGER_PROJE
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper mapper;
     private final KeycloakUserManagementService keycloakUserManagementService;
     private final ProjectFeignClient projectFeignClient;
-    private final UserMapper userMapper;
 
     @Override
-    public UserResponse createUser(OAuth2User oAuth2User, UserRequest request) {
+    public User createUser(OAuth2User oAuth2User, User request) {
 
+        setAdditionFieldsForOauth2User(request, oAuth2User);
 
-        User user = mapper.fromRequestToEntity(request);
-        setAdditionFieldsForOauth2User(user, oAuth2User);
-        User savedUser = userRepository.save(user);
-
-        return mapper.fromEntityToResponse(savedUser);
+        return userRepository.save(request);
     }
 
     @Override
-    public UserResponse findUserById(String id) {
+    public User findUserById(String id) {
+        return getOrThrow(id);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUserById(String id, User request) {
         User user = getOrThrow(id);
-        return mapper.fromEntityToResponse(user);
-    }
 
-    @Override
-    public UserResponseList findAllUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserResponse> userResponses = users.stream()
-                .map(mapper::fromEntityToResponse)
-                .toList();
-        return UserResponseList.builder()
-                .userResponseList(userResponses)
-                .build();
-    }
+        request.setId(user.getId());
 
-    @Override
-    public UserResponse updateUserById(String id, UserRequest request) {
-        User user = getOrThrow(id);
-        User updatedUser = mapper.fromRequestToEntity(request);
-        updatedUser.setId(user.getId());
         keycloakUserManagementService.updateUser(id, request);
-        return mapper.fromEntityToResponse(userRepository.save(updatedUser));
+        return userRepository.save(request);
     }
 
     @Override
-    public UserResponse deleteUserById(String id) {
+    public User deleteUserById(String id) {
         User user = getOrThrow(id);
         keycloakUserManagementService.deleteUserById(id);
         userRepository.delete(user);
-        return mapper.fromEntityToResponse(user);
+        return user;
     }
 
     @Override
@@ -93,7 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse addProjectToUser(String userId, String projectId) {
+    public User addProjectToUser(String userId, String projectId) {
         ProjectResponse response = projectFeignClient.getProjectById(projectId);
         User user = getOrThrow(userId);
 
@@ -106,21 +92,12 @@ public class UserServiceImpl implements UserService {
         }
         user.setProjects(projects);
 
-        User userToSave = userRepository.save(user);
-
-        return mapper.fromEntityToResponse(userToSave);
+        return userRepository.save(user);
     }
 
     @Override
-    public UserResponseList findAllManagerAndUsers() {
-        List<User> managerslist = userRepository.findAllByRoles(ROLE_MANAGER_PROJECT);
-        List<UserResponse> managersResponseList = managerslist.stream()
-                .map(mapper::fromEntityToResponse)
-                .toList();
-
-        return UserResponseList.builder()
-                .userResponseList(managersResponseList)
-                .build();
+    public List<User> findAllManagerAndUsers() {
+        return userRepository.findAllByRoles(ROLE_MANAGER_PROJECT);
     }
 
     private User getOrThrow(String id) {

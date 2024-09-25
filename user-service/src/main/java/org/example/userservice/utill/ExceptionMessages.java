@@ -1,8 +1,5 @@
 package org.example.userservice.utill;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class ExceptionMessages {
 
     public static final String USER_NOT_FOUND = "User with id '%s' not found";
