@@ -3,7 +3,7 @@ version: '3'
 services:
 
   api-gateway:
-    image: naza1re/api-gateway
+    image: api-gateway
     container_name: api-gateway
     ports:
       - '8070:8070'
@@ -16,7 +16,7 @@ services:
 
 
   eureka:
-    image: naza1re/eureka-server
+    image: eureka-server
     container_name: eureka-server
     ports:
       - '8090:8090'
@@ -24,14 +24,14 @@ services:
       - task-management
 
   task-service:
-    image: naza1re/task-service
+    image: task-service
     container_name: task-service
     ports:
       - '8082:8082'
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/task
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8090/eureka
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8180/auth/realms/task-realm/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_VIRTUAL_HOST=vhost
     depends_on:
@@ -44,13 +44,13 @@ services:
 
   user-service:
     container_name: user-service
-    image: naza1re/user-service
+    image: user-service
     ports:
       - '8081:8081'
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/task
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8090/eureka
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8180/auth/realms/task-realm/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
     depends_on:
       - eureka
       - mongodb
@@ -60,7 +60,7 @@ services:
 
   project-service:
     container_name: project-service
-    image: naza1re/project-service
+    image: project-service
     ports:
       - '8083:8083'
     environment:
@@ -75,7 +75,7 @@ services:
       - task-management
 
   company-service:
-    image: naza1re/company-service
+    image: company-service
     container_name: company-service
     ports:
       - '8084:8084'
@@ -90,6 +90,8 @@ services:
       - eureka
     networks:
       - task-management
+
+
 
   postgres:
     image: postgres
@@ -117,6 +119,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: adminpass
       KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+      KEYCLOAK_FRONTEND_URL: "http://localhost:8080/auth"
     volumes:
         - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
     networks:
