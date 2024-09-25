@@ -1,8 +1,5 @@
 package org.example.projectservice.security.utill;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class SecurityConstants {
 
     public static final String EMAIL = "email";

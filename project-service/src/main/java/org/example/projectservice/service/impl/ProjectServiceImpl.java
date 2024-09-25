@@ -2,12 +2,8 @@ package org.example.projectservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.projectservice.client.CompanyFeignClient;
-import org.example.projectservice.dto.request.ProjectRequest;
 import org.example.projectservice.dto.response.CompanyResponse;
-import org.example.projectservice.dto.response.ProjectListResponse;
-import org.example.projectservice.dto.response.ProjectResponse;
 import org.example.projectservice.exception.ProjectNotFoundException;
-import org.example.projectservice.mapper.ProjectMapper;
 import org.example.projectservice.model.Project;
 import org.example.projectservice.model.status.Status;
 import org.example.projectservice.repository.ProjectRepository;
@@ -27,48 +23,37 @@ import static org.example.projectservice.security.utill.SecurityConstants.*;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
     private final CompanyFeignClient companyFeignClient;
 
     @Override
-    public ProjectResponse createNewProject(ProjectRequest request) {
+    public Project createNewProject(Project request) {
         CompanyResponse companyResponse = companyFeignClient.getCompanyById(request.getCompanyId());
-        Project project = projectMapper.fromRequestToEntity(request);
-        project.setStatus(Status.OPEN);
-        Project savedProject = projectRepository.save(project);
-        return projectMapper.fromEntityToResponse(savedProject);
+        request.setStatus(Status.OPEN);
+        return projectRepository.save(request);
     }
 
     @Override
-    public ProjectListResponse getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        List<ProjectResponse> projectResponses = projects
-                .stream()
-                .map(projectMapper::fromEntityToResponse)
-                .toList();
-        return new ProjectListResponse(projectResponses);
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
     }
 
     @Override
-    public ProjectResponse getProjectById(String id) {
+    public Project getProjectById(String id) {
+        return getOrThrow(id);
+    }
+
+    @Override
+    public Project updateProjectById(String id, Project request) {
         Project project = getOrThrow(id);
-        return projectMapper.fromEntityToResponse(project);
+        request.setId(project.getId());
+        return projectRepository.save(request);
     }
 
     @Override
-    public ProjectResponse updateProjectById(String id, ProjectRequest request) {
-        Project project = getOrThrow(id);
-        Project newProject = projectMapper.fromRequestToEntity(request);
-        newProject.setId(project.getId());
-        Project savedProject = projectRepository.save(newProject);
-        return projectMapper.fromEntityToResponse(savedProject);
-    }
-
-    @Override
-    public ProjectResponse deleteProjectById(String id) {
+    public Project deleteProjectById(String id) {
         Project project = getOrThrow(id);
         projectRepository.delete(project);
-        return projectMapper.fromEntityToResponse(project);
+        return project;
     }
 
     @Override
@@ -83,27 +68,24 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse closeProject(String projectId) {
+    public Project closeProject(String projectId) {
         Project project = getOrThrow(projectId);
         project.setStatus(Status.CLOSED);
-        Project savedProject = projectRepository.save(project);
-        return projectMapper.fromEntityToResponse(savedProject);
+        return projectRepository.save(project);
     }
 
     @Override
-    public ProjectResponse freezeProject(String projectId) {
+    public Project freezeProject(String projectId) {
         Project project = getOrThrow(projectId);
         project.setStatus(Status.FREEZE);
-        Project savedProject = projectRepository.save(project);
-        return projectMapper.fromEntityToResponse(savedProject);
+        return projectRepository.save(project);
     }
 
     @Override
-    public ProjectResponse openProject(String projectId) {
+    public Project openProject(String projectId) {
         Project project = getOrThrow(projectId);
         project.setStatus(Status.OPEN);
-        Project savedProject = projectRepository.save(project);
-        return projectMapper.fromEntityToResponse(savedProject);
+        return projectRepository.save(project);
     }
 
     private Project getOrThrow(String id) {

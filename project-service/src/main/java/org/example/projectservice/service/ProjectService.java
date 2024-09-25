@@ -3,25 +3,28 @@ package org.example.projectservice.service;
 import org.example.projectservice.dto.response.ProjectListResponse;
 import org.example.projectservice.dto.request.ProjectRequest;
 import org.example.projectservice.dto.response.ProjectResponse;
+import org.example.projectservice.model.Project;
 import org.example.projectservice.security.model.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.util.List;
+
 public interface ProjectService {
-    ProjectResponse createNewProject(ProjectRequest project);
+    Project createNewProject(Project project);
 
-    ProjectListResponse getAllProjects();
+    List<Project> getAllProjects();
 
-    ProjectResponse getProjectById(String id);
+    Project getProjectById(String id);
 
-    ProjectResponse updateProjectById(String id, ProjectRequest request);
+    Project updateProjectById(String id, Project request);
 
-    ProjectResponse deleteProjectById(String id);
+    Project deleteProjectById(String id);
 
     User extractUserInfo(Jwt jwt);
 
-    ProjectResponse closeProject(String projectId);
+    Project closeProject(String projectId);
 
-    ProjectResponse freezeProject(String projectId);
+    Project freezeProject(String projectId);
 
-    ProjectResponse openProject(String projectId);
+    Project openProject(String projectId);
 }

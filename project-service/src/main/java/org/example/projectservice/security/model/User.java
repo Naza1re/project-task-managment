@@ -1,6 +1,10 @@
 package org.example.projectservice.security.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Setter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.example.projectservice.security.utill.SecurityConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
