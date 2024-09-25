@@ -33,9 +33,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectFeignClient projectFeignClient;
-    private final TaskMapper taskMapper;
     private final UserFeignClient userFeignClient;
-    private final TaskSender taskSender;
 
     @Override
     public Task createTask(Task request, String projectId, OAuth2User user) {
