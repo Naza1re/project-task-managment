@@ -8,6 +8,7 @@ import org.example.projectservice.model.Project;
 import org.example.projectservice.model.status.Status;
 import org.example.projectservice.repository.ProjectRepository;
 import org.example.projectservice.security.model.User;
+import org.example.projectservice.service.CompanyService;
 import org.example.projectservice.service.ProjectService;
 import org.example.projectservice.utill.ExceptionMessages;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,11 +24,11 @@ import static org.example.projectservice.security.utill.SecurityConstants.*;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final CompanyFeignClient companyFeignClient;
+    private final CompanyService companyService;
 
     @Override
     public Project createNewProject(Project request) {
-        CompanyResponse companyResponse = companyFeignClient.getCompanyById(request.getCompanyId());
+        CompanyResponse companyResponse = companyService.getCompanyById(request.getCompanyId());
         request.setStatus(Status.OPEN);
         return projectRepository.save(request);
     }

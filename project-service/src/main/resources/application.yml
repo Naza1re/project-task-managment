@@ -37,6 +37,17 @@ service:
   company:
     name: company-service
     path: /api/v1/company
+resilience4j:
+  circuitbreaker:
+    instances:
+      company:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
 
 server:
   port: 8083
