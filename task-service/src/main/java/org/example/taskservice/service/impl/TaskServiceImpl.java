@@ -13,6 +13,7 @@ import org.example.taskservice.repository.TaskRepository;
 import org.example.taskservice.security.model.User;
 import org.example.taskservice.service.ProjectService;
 import org.example.taskservice.service.TaskService;
+import org.example.taskservice.service.UserService;
 import org.example.taskservice.utill.ExceptionMessages;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -30,7 +31,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
-    private final UserFeignClient userFeignClient;
+    private final UserService userService;
 
     @Override
     public Task createTask(Task request, String projectId, OAuth2User user) {
@@ -91,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task assignTaskToUserWithId(String taskId, String userId, OAuth2User user) {
-        UserResponse userResponse = userFeignClient.getUser(userId);
+        UserResponse userResponse = userService.getUser(userId);
         Task task = getOrThrow(taskId);
 
         task.setUserId(userResponse.getId());

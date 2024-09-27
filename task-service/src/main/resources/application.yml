@@ -42,6 +42,7 @@ jwt:
     converter:
       principal-attribute: sub
       resource-id: task-client
+
 service:
   project:
     name: project-service
@@ -54,6 +55,14 @@ resilience4j:
   circuitbreaker:
     instances:
       project:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+      user:
         registerHealthIndicator: true
         slidingWindowSize: 5
         minimumNumberOfCalls: 5
