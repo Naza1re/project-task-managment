@@ -16,70 +16,70 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <spring.oauth.2.client.version>3.3.3</spring.oauth.2.client.version>
+        <circuit.breaker.version>3.1.2</circuit.breaker.version>
+        <amqp.version>3.3.3</amqp.version>
+        <model.mapper.version>3.2.1</model.mapper.version>
+        <spring.web.version>3.3.3</spring.web.version>
+        <spring.open.feign.version>4.0.1</spring.open.feign.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
-            <version>3.3.3</version>
+            <version>${spring.oauth.2.client.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.3.3</version>
+            <version>${spring.web.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>4.0.1</version>
+            <version>${spring.open.feign.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>3.2.1</version>
+            <version>${model.mapper.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>3.3.3</version>
+            <version>${amqp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-circuitbreaker-resilience4j</artifactId>
+            <version>${circuit.breaker.version}</version>
         </dependency>
 
     </dependencies>

@@ -11,6 +11,7 @@ import org.example.taskservice.model.Task;
 import org.example.taskservice.model.status.Status;
 import org.example.taskservice.repository.TaskRepository;
 import org.example.taskservice.security.model.User;
+import org.example.taskservice.service.ProjectService;
 import org.example.taskservice.service.TaskService;
 import org.example.taskservice.utill.ExceptionMessages;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -23,19 +24,18 @@ import java.util.UUID;
 
 import static org.example.taskservice.security.utill.SecurityConstants.*;
 
-
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final ProjectFeignClient projectFeignClient;
+    private final ProjectService projectService;
     private final UserFeignClient userFeignClient;
 
     @Override
     public Task createTask(Task request, String projectId, OAuth2User user) {
 
-        ProjectResponse response = projectFeignClient.getProjectById(projectId);
+        ProjectResponse response = projectService.getProjectById(projectId);
 
         request.setCreatedAt(LocalDateTime.now());
         request.setProjectId(response.getId());

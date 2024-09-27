@@ -32,8 +32,11 @@ spring:
       name: taskExchange
     virtual-host: vhost
 
-server:
-  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8090/eureka
+
 jwt:
   auth:
     converter:
@@ -45,9 +48,19 @@ service:
     path: /api/v1/project
   user:
     name: user-service
-    path: /api/v1/users
+    path: /api/v1/user
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8090/eureka
+resilience4j:
+  circuitbreaker:
+    instances:
+      project:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+
+server:
+  port: 8082

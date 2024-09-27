@@ -1,4 +1,4 @@
-package org.example.userservice.exception.handler.error;
+package org.example.userservice.exception.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

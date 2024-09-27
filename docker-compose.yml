@@ -14,7 +14,6 @@ services:
     networks:
       - task-management
 
-
   eureka:
     image: eureka-server
     container_name: eureka-server

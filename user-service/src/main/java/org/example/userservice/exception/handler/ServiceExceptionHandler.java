@@ -3,7 +3,7 @@ package org.example.userservice.exception.handler;
 import org.example.userservice.exception.NotFoundException;
 import org.example.userservice.exception.UserAlreadyExistByPhoneException;
 import org.example.userservice.exception.UserNotFoundException;
-import org.example.userservice.exception.handler.error.AppError;
+import org.example.userservice.exception.error.AppError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
