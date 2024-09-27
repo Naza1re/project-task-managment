@@ -89,8 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private Project getOrThrow(String id) {
-        return projectRepository
-                .findById(id)
+        return projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(String.format(ExceptionMessages.PROJECT_NOT_FOUND, id)));
     }
 }

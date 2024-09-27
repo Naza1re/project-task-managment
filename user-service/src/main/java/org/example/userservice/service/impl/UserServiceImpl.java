@@ -1,13 +1,12 @@
 package org.example.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.userservice.client.ProjectFeignClient;
 import org.example.userservice.dto.response.ProjectResponse;
 import org.example.userservice.exception.UserNotFoundException;
 import org.example.userservice.keycloak.service.KeycloakUserManagementService;
-import org.example.userservice.mapper.UserMapper;
 import org.example.userservice.model.User;
 import org.example.userservice.repository.UserRepository;
+import org.example.userservice.service.ProjectService;
 import org.example.userservice.service.UserService;
 import org.example.userservice.utill.KeycloakConstants;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final KeycloakUserManagementService keycloakUserManagementService;
-    private final ProjectFeignClient projectFeignClient;
+    private final ProjectService projectService;
 
     @Override
     public User createUser(OAuth2User oAuth2User, User request) {
@@ -62,6 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deleteUserById(String id) {
         User user = getOrThrow(id);
+
         keycloakUserManagementService.deleteUserById(id);
         userRepository.delete(user);
         return user;
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addProjectToUser(String userId, String projectId) {
-        ProjectResponse response = projectFeignClient.getProjectById(projectId);
+        ProjectResponse response = projectService.getProjectById(projectId);
         User user = getOrThrow(userId);
 
         List<String> projects = user.getProjects();
