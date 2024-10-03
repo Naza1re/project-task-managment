@@ -21,7 +21,10 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/auth/realms/task-realm
           jwk-set-uri: http://keycloak:8080/auth/realms/task-realm/protocol/openid-connect/certs
-
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: false
 eureka:
   client:
     service-url:
@@ -37,18 +40,27 @@ service:
   company:
     name: company-service
     path: /api/v1/company
+
 resilience4j:
   circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        ignoreExceptions:
+          - org.example.projectservice.exception.NotFoundException
     instances:
       company:
-        registerHealthIndicator: true
-        slidingWindowSize: 5
-        minimumNumberOfCalls: 5
+        baseConfig: default
         failureRateThreshold: 50
-        waitDurationInOpenState: 10s
-        permittedNumberOfCallsInHalfOpenState: 3
-        eventConsumerBufferSize: 10
+        waitDurationInOpenState: 5000
+        ignoreExceptions:
+          - org.example.projectservice.exception.NotFoundException
+
 
 server:
   port: 8083
-  
+

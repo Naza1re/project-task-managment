@@ -2,7 +2,6 @@ package org.example.taskservice.config;
 
 import feign.FeignException;
 import feign.Response;
-import feign.RetryableException;
 import feign.codec.ErrorDecoder;
 import org.example.taskservice.exception.FeignClientException;
 import org.example.taskservice.exception.NotFoundException;
@@ -16,17 +15,12 @@ public class MyDecoder implements ErrorDecoder {
         String[] exMessageSplit = responseMessageSplit[responseMessageSplit.length - 1].split("\"");
         String exMessage = exMessageSplit[exMessageSplit.length - 2];
         if (status == 400) {
-            throw new FeignClientException(exMessage);
+            return new FeignClientException(exMessage);
         }
         if (status == 404) {
-            throw new NotFoundException(exMessage);
+            return new NotFoundException(exMessage);
         }
-        return new RetryableException(
-                response.status(),
-                exception.getMessage(),
-                response.request().httpMethod(),
-                exception,
-                null,
-                response.request());
+
+        return exception;
     }
 }

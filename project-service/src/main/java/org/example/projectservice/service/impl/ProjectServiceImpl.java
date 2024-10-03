@@ -1,7 +1,6 @@
 package org.example.projectservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.projectservice.client.CompanyFeignClient;
 import org.example.projectservice.dto.response.CompanyResponse;
 import org.example.projectservice.exception.ProjectNotFoundException;
 import org.example.projectservice.model.Project;
@@ -30,6 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Project createNewProject(Project request) {
         CompanyResponse companyResponse = companyService.getCompanyById(request.getCompanyId());
         request.setStatus(Status.OPEN);
+        request.setCompanyId(companyResponse.getId());
         return projectRepository.save(request);
     }
 

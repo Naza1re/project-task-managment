@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
         path = "${service.company.path}",
         configuration = FeignClientConfiguration.class)
 public interface CompanyFeignClient {
-
     @GetMapping("/{companyId}")
     CompanyResponse getCompanyById(@PathVariable String companyId);
+
 }
