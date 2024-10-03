@@ -50,15 +50,11 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3
         failureRateThreshold: 50
         waitDurationInOpenState: 10000
-        ignoreExceptions:
-          - org.example.projectservice.exception.NotFoundException
     instances:
       company:
         baseConfig: default
         failureRateThreshold: 50
         waitDurationInOpenState: 5000
-        ignoreExceptions:
-          - org.example.projectservice.exception.NotFoundException
 
 
 server:
