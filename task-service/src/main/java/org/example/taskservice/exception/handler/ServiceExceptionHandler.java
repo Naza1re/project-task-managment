@@ -53,4 +53,15 @@ public class ServiceExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(ServiceUnAvailableException.class)
+    public ResponseEntity<AppError> handleServiceUnAvailableException(
+            RuntimeException exception
+    ) {
+        String message = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(AppError.builder()
+                        .message(message)
+                        .build());
+    }
+
 }
