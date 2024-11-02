@@ -35,3 +35,10 @@ jwt:
 logging:
   level:
     root: debug
+
+
+spring:
+  application:
+    name: book-service
+  config:
+    import: "configserver:"

@@ -132,4 +132,7 @@ public class TaskController {
                         .findAllTasksOfUser(userId)));
     }
 
+    public TaskMapper getTaskMapper() {
+        return taskMapper;
+    }
 }
