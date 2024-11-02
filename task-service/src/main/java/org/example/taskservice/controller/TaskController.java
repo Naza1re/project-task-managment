@@ -122,6 +122,7 @@ public class TaskController {
                         .refuseTaskByTaskId(taskId, user)));
     }
 
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_PROJECT_MANAGER')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<TaskListResponse> getAllTasksOfUser(
