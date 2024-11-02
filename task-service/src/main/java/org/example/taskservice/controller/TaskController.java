@@ -123,6 +123,10 @@ public class TaskController {
     }
 
 
+    public TaskService getTaskService() {
+        return taskService;
+    }
+
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_PROJECT_MANAGER')")
     @GetMapping("/user/{userId}")
@@ -135,8 +139,6 @@ public class TaskController {
     }
 
     public TaskMapper getTaskMapper() {
-        System.out.println("Its time to release :");
         return taskMapper;
-
     }
 }
