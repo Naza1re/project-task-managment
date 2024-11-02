@@ -134,6 +134,8 @@ public class TaskController {
     }
 
     public TaskMapper getTaskMapper() {
+        System.out.println("Its time to release :");
         return taskMapper;
+
     }
 }
